@@ -1,0 +1,53 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Brown Dining Wrapped</title>
+        <link rel="icon" href="icons/favicon-64x64.png" sizes="64x64"
+            type="image/png">
+        <link rel="icon" href="icons/favicon-32x32.png" sizes="32x32"
+            type="image/png">
+        <link rel="icon" href="icons/favicon-16x16.png" sizes="16x16"
+            type="image/png">
+        <link rel="apple-touch-icon" href="icons/favicon-64x64.png">
+        <link rel="stylesheet" href="./style.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Firebase App -->
+        <script
+            src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+
+        <!-- Firebase Storage -->
+        <script
+            src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+        <script type="module" src="script.js"></script>
+    </head>
+    <body>
+        <main>
+            <h1 class="title">Brown Dining Wrapped</h1>
+            <form id="csvForm">
+                <div class="form-group">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file-upload" name="file"
+                            required>
+                        <label for="file-upload"
+                            class="file-input-button">Choose a file...</label>
+                    </div>
+                    <button type="button" id="processButton">Process
+                        File</button>
+                </div>
+            </form>
+            <div class="chart-container">
+                <canvas id="myPieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="timeBarChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="daysBarChart"></canvas>
+            </div>
+        </main>
+    </body>
+</html>

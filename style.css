@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    min-height: 100vh;  /* instead of height: 100vh */
+    width: 100%;
+}
+
+main {
+    width: 100%;        /* ensure main takes full width */
+    flex-grow: 1;       /* allow it to grow */
+    display: flex;      /* make it a flex container */
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: #222222;
+    font-size: 2.5rem;
+    margin-top: 20px;
+    margin-bottom: 3px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 0px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 18px; /* Adjust this to increase the gap between the file input and button */
+}
+
+/* Styling the file input */
+input[type="file"] {
+    display: none; /* Hide the default file input */
+}
+
+input[type="file"] + label {
+    display: inline-block;
+    background-color: #d72929;
+    color: white;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    line-height: 1.2;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="file"] + label:hover {
+    background-color: #b92323;
+    transform: scale(1.02);
+}
+
+
+/* Styling for the button */
+button {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #222222;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    line-height: 1.2;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Button Hover and Focus States */
+button:hover {
+    background-color: #363636;
+    transform: scale(1.02);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0px rgba(0, 123, 255, 0.5);
+}
+
+/* Styling the pie chart container */
+.chart-container {
+    width: 80%;
+    flex-grow: 0.8;       /* allow chart container to grow */
+    position: relative;
+    margin: 0 auto;
+    height: 30%;
+    /* Center alignment options */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+/* Update canvas to make the pie chart more responsive */
+canvas#myPieChart {
+    width: 100%; /* Make the pie chart take up the full width of its container */
+    height: 80%; /* Maintain aspect ratio */
+}
+
+/* Add some padding and center text */
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: #555;
+    margin-top: 20px;
+    font-size: 1.5rem;
+}
