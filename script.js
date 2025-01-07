@@ -42,6 +42,7 @@ window.onload = function () {
                     calcFrequency();
                     calcTimes();
                     calcDays();
+                    calcStats();
                 },
                 error: function (error) {
                     console.error('Error parsing CSV:', error);
@@ -243,6 +244,27 @@ window.onload = function () {
                 }
             }
         });
+    }
+
+    function calcStats() {
+        let weeks = 0;
+        let swipes = 0;
+        parsedData.forEach(item => {
+            if (item.Description.includes("Automated reset")) {
+                weeks += 1;
+            } else if (!item.Description.includes("Deposit")) {
+                swipes += 1;
+            }
+        });
+        let swipesPerWeek = swipes / weeks
+        console.log("Swipes per week");
+        console.log(swipesPerWeek);
+        updateStats("Swipes per week: " + swipesPerWeek.toString());
+    }
+
+    function updateStats(stats) {
+        const statsOutput = document.getElementById('statsOutput');
+        statsOutput.value = stats;
     }
 
 };
