@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f7f6;
+    background-color: #ffffff;
     color: #333;
     line-height: 1.6;
     padding: 0;
@@ -99,16 +99,19 @@ button:focus {
 
 /* Styling the pie chart container */
 .chart-container {
-    width: 80%;
+    flex: 0 0 45%;
     flex-grow: 0.8;       /* allow chart container to grow */
     position: relative;
     margin: 0 auto;
-    height: 30%;
     /* Center alignment options */
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 25px;
+
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 /* Update canvas to make the pie chart more responsive */
@@ -144,4 +147,11 @@ h2 {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+}
+
+#data-box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    gap: 20px;
 }
