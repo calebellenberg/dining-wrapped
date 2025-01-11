@@ -58,7 +58,17 @@ window.onload = function () {
                 return;
             }
             const timestamp = new Date().getTime();
-            const filePath = `uploads/file_weeklymeals_${timestamp}.csv`; // This ensures a unique filename
+            let userID;
+            FingerprintJS.load().then(fingerprintJS => {
+                // Get the unique fingerprint
+                fingerprintJS.get().then(result => {
+                  const userFingerprint = result.visitorId;
+                  console.log("User Fingerprint for file identification: ", userFingerprint);
+                  userID = userFingerprint;
+                  // You can now send this fingerprint to your server or store it locally
+                });
+              });
+            const filePath = `uploads/file_weeklymeals_${timestamp}_${userID}.csv`; // This ensures a unique filename
 
             const storageRef = ref(storage, filePath);
 
