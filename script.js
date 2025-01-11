@@ -69,7 +69,7 @@ window.onload = function () {
                     const storageRef = ref(storage, filePath);
 
                     // Upload the file COMMENTED OUT FOR NOW
-                    if (shareData.checked) {
+                    if (false) { //(shareData.checked) {
                         uploadBytes(storageRef, file).then((snapshot) => {
                             console.log('File uploaded successfully!');
                         }).catch((error) => {
