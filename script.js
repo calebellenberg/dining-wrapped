@@ -4,6 +4,8 @@ import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs
 
 window.onload = function () {
     let parsedData = [];
+    let displayBox = document.getElementById("data-box");
+    let shareData = document.getElementById("share-data");
 
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
@@ -43,6 +45,7 @@ window.onload = function () {
                     calcTimes();
                     calcDays();
                     calcStats();
+                    displayBox.style.display = "flex";
                 },
                 error: function (error) {
                     console.error('Error parsing CSV:', error);
@@ -60,11 +63,13 @@ window.onload = function () {
             const storageRef = ref(storage, filePath);
 
             // Upload the file COMMENTED OUT FOR NOW
-            ```uploadBytes(storageRef, file).then((snapshot) => {
-                console.log('File uploaded successfully!');
-            }).catch((error) => {
-                console.error('Upload failed:', error);
-            });```
+            if (false) {//(shareData.checked) {
+                uploadBytes(storageRef, file).then((snapshot) => {
+                    console.log('File uploaded successfully!');
+                }).catch((error) => {
+                    console.error('Upload failed:', error);
+                });
+            }
         } else {
             alert('Please select a CSV file first.');
         }
@@ -83,7 +88,6 @@ window.onload = function () {
         let josCount = 0;
         let ivyCount = 0;
         parsedData.forEach(item => {
-            console.log(item.Description);
             if (item.Description.includes("Sharpe")) {
                 rattyCount += 1;
             } else if (item.Description.includes("Andrews")) {
@@ -135,7 +139,7 @@ window.onload = function () {
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'right',
                     },
                     tooltip: {
                         callbacks: {

@@ -31,8 +31,10 @@ h1 {
     font-family: 'Montserrat', sans-serif;
     color: #222222;
     font-size: 2.5rem;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 3px;
+    text-wrap: wrap;
+    text-align: center;
 }
 
 form {
@@ -45,8 +47,11 @@ form {
 
 .form-group {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 18px; /* Adjust this to increase the gap between the file input and button */
+    row-gap: 8px;
+    justify-content: center;  /* Center the elements within the group */
 }
 
 /* Styling the file input */
@@ -56,7 +61,7 @@ input[type="file"] {
 
 input[type="file"] + label {
     display: inline-block;
-    background-color: #d72929;
+    background-color: #3f5fff;
     color: white;
     padding: 12px 20px;
     cursor: pointer;
@@ -67,7 +72,7 @@ input[type="file"] + label {
 }
 
 input[type="file"] + label:hover {
-    background-color: #b92323;
+    background-color: #354fd3;
     transform: scale(1.02);
 }
 
@@ -97,6 +102,55 @@ button:focus {
     box-shadow: 0 0 0 0px rgba(0, 123, 255, 0.5);
 }
 
+.custom-checkbox {
+    display: inline-flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none;
+    margin: 10px 0;
+}
+
+.custom-checkbox input {
+    display: none; /* Hide the default checkbox */
+}
+
+.custom-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    background-color: white;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.custom-checkbox input:checked + .checkmark {
+    border-color: #3f5fff;
+    background-color: #3f5fff;
+}
+
+.custom-checkbox .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 0px;
+    width: 4px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.custom-checkbox input:checked + .checkmark::after {
+    opacity: 1;
+}
+
+
 /* Styling the pie chart container */
 .chart-container {
     flex: 0 0 45%;
@@ -107,7 +161,7 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 20px;
 
     background-color: #f0f0f0;
     border-radius: 10px;
@@ -128,14 +182,22 @@ h2 {
     font-size: 1.5rem;
 }
 
-.stats-container {
-    margin-top: 20px;
-    width: 80%;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+#pie-chart-container {
+    height: 60%;
 }
+
+#hours-chart-container {
+    height: 60%
+}
+
+#days-chart-container {
+    height: 40%
+}
+
+#stats-container {
+    height: 40%;
+}
+
 
 #statsOutput {
     width: 100%;
@@ -150,8 +212,11 @@ h2 {
 }
 
 #data-box {
-    display: flex;
+    display: none;
     flex-wrap: wrap;
-    width: 80%;
+    width: 100%;
+    height: 75%;
     gap: 20px;
+    row-gap: 0px;
+    padding: 0 20px; 
 }
