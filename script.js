@@ -58,28 +58,26 @@ window.onload = function () {
                 return;
             }
             const timestamp = new Date().getTime();
-            let userID;
+            let userFingerprint;
             FingerprintJS.load().then(fingerprintJS => {
                 // Get the unique fingerprint
                 fingerprintJS.get().then(result => {
-                  const userFingerprint = result.visitorId;
-                  console.log("User Fingerprint for file identification: ", userFingerprint);
-                  userID = userFingerprint;
-                  // You can now send this fingerprint to your server or store it locally
-                });
-              });
-            const filePath = `uploads/file_weeklymeals_${timestamp}_${userID}.csv`; // This ensures a unique filename
+                    userFingerprint = result.visitorId;
+                    console.log("User Fingerprint for file identification: ", userFingerprint);
+                    // You can now send this fingerprint to your server or store it locally
+                    const filePath = `uploads/file_weeklymeals_${timestamp}_${userFingerprint}.csv`; // This ensures a unique filename
+                    const storageRef = ref(storage, filePath);
 
-            const storageRef = ref(storage, filePath);
-
-            // Upload the file COMMENTED OUT FOR NOW
-            if (shareData.checked) {
-                uploadBytes(storageRef, file).then((snapshot) => {
-                    console.log('File uploaded successfully!');
-                }).catch((error) => {
-                    console.error('Upload failed:', error);
+                    // Upload the file COMMENTED OUT FOR NOW
+                    if (shareData.checked) {
+                        uploadBytes(storageRef, file).then((snapshot) => {
+                            console.log('File uploaded successfully!');
+                        }).catch((error) => {
+                            console.error('Upload failed:', error);
+                        });
+                    }
                 });
-            }
+            });
         } else {
             alert('Please select a CSV file first.');
         }
@@ -213,19 +211,19 @@ window.onload = function () {
             console.error('Chart variable name must be provided');
             return;
         }
-    
+
         const ctx = document.getElementById(canvasID).getContext('2d');
-    
+
         // Store charts in a dedicated object instead of directly on window
         if (!window.chartInstances) {
             window.chartInstances = {};
         }
-    
+
         // Destroy previous chart instance if it exists
         if (window.chartInstances[chartVarName]) {
             window.chartInstances[chartVarName].destroy();
         }
-    
+
         // Create a new bar chart
         window.chartInstances[chartVarName] = new Chart(ctx, {
             type: 'bar',
