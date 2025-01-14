@@ -15,14 +15,18 @@ body {
     align-items: center;
     height: 100vh;
     flex-direction: column;
-    min-height: 100vh;  /* instead of height: 100vh */
+    min-height: 100vh;
+    /* instead of height: 100vh */
     width: 100%;
 }
 
 main {
-    width: 100%;        /* ensure main takes full width */
-    flex-grow: 1;       /* allow it to grow */
-    display: flex;      /* make it a flex container */
+    width: 100%;
+    /* ensure main takes full width */
+    flex-grow: 1;
+    /* allow it to grow */
+    display: flex;
+    /* make it a flex container */
     flex-direction: column;
     align-items: center;
 }
@@ -49,17 +53,20 @@ form {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 18px; /* Adjust this to increase the gap between the file input and button */
+    gap: 18px;
+    /* Adjust this to increase the gap between the file input and button */
     row-gap: 8px;
-    justify-content: center;  /* Center the elements within the group */
+    justify-content: center;
+    /* Center the elements within the group */
 }
 
 /* Styling the file input */
 input[type="file"] {
-    display: none; /* Hide the default file input */
+    display: none;
+    /* Hide the default file input */
 }
 
-input[type="file"] + label {
+input[type="file"]+label {
     display: inline-block;
     background-color: #3f5fff;
     color: white;
@@ -71,7 +78,7 @@ input[type="file"] + label {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-input[type="file"] + label:hover {
+input[type="file"]+label:hover {
     background-color: #354fd3;
     transform: scale(1.02);
 }
@@ -113,7 +120,8 @@ button:focus {
 }
 
 .custom-checkbox input {
-    display: none; /* Hide the default checkbox */
+    display: none;
+    /* Hide the default checkbox */
 }
 
 .custom-checkbox .checkmark {
@@ -127,7 +135,7 @@ button:focus {
     transition: all 0.3s ease;
 }
 
-.custom-checkbox input:checked + .checkmark {
+.custom-checkbox input:checked+.checkmark {
     border-color: #3f5fff;
     background-color: #3f5fff;
 }
@@ -146,7 +154,7 @@ button:focus {
     transition: opacity 0.3s ease;
 }
 
-.custom-checkbox input:checked + .checkmark::after {
+.custom-checkbox input:checked+.checkmark::after {
     opacity: 1;
 }
 
@@ -154,7 +162,8 @@ button:focus {
 /* Styling the pie chart container */
 .chart-container {
     flex: 0 0 45%;
-    flex-grow: 0.8;       /* allow chart container to grow */
+    flex-grow: 0.8;
+    /* allow chart container to grow */
     position: relative;
     margin: 0 auto;
     /* Center alignment options */
@@ -170,8 +179,10 @@ button:focus {
 
 /* Update canvas to make the pie chart more responsive */
 canvas#myPieChart {
-    width: 100%; /* Make the pie chart take up the full width of its container */
-    height: 80%; /* Maintain aspect ratio */
+    width: 100%;
+    /* Make the pie chart take up the full width of its container */
+    height: 80%;
+    /* Maintain aspect ratio */
 }
 
 /* Add some padding and center text */
@@ -218,5 +229,82 @@ h2 {
     height: 75%;
     gap: 20px;
     row-gap: 0px;
-    padding: 0 20px; 
+    padding: 0 20px;
+}
+
+.help-box {
+    padding: 30px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 75%;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+    /* Initially hidden */
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+}
+
+ol {
+    margin-left: 0;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
+/* Add overlay styling */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black */
+    display: none;
+    /* Initially hidden */
+    z-index: 10;
+}
+
+.help-box .close-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: black;
+}
+
+.help-box .close-btn:hover {
+    color: rgb(54, 54, 54);
+}
+
+.help-btn {
+    background-color: transparent;
+    color: #3f5fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 6px;
+}
+
+.help-btn:hover {
+    background-color: transparent;
+}
+
+a {
+    color: #3f5fff;
+}
+
+a:visited {
+    color: #3f5fff;
+    /* Keep the same color as unvisited links */
+    text-decoration: none;
+    /* Optional: Keep the same underline style */
 }

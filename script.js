@@ -279,4 +279,21 @@ window.onload = function () {
         statsOutput.value = stats;
     }
 
+    // Function to show the help box
+    function showHelpBox() {
+        const helpBox = document.getElementById('helpBox');
+        helpBox.style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Function to dismiss the help box
+    function dismissHelpBox() {
+        const helpBox = document.getElementById('helpBox');
+        helpBox.style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    document.getElementById('helpButton').addEventListener('click', showHelpBox);
+    document.getElementById('closeButton').addEventListener('click', dismissHelpBox);
+
 };
