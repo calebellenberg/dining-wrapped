@@ -261,22 +261,47 @@ window.onload = function () {
     function calcStats() {
         let weeks = 0;
         let swipes = 0;
+        let breakfast = 0;
+        let lunch = 0;
+        let dinner = 0;
+        let lateNight = 0;
         parsedData.forEach(item => {
             if (item.Description.includes("Automated reset")) {
                 weeks += 1;
             } else if (!item.Description.includes("Deposit")) {
                 swipes += 1;
             }
+            const timestamp = item.Date;
+            const hour = new Date(timestamp).getHours();
+            if (hour >= 20) {
+                lateNight += 1;
+            } else if (hour >= 16) {
+                dinner += 1;
+            } else if (hour >= 11) {
+                lunch += 1;
+            } else if (hour >= 5) {
+                breakfast += 1;
+            } else {
+                lateNight += 1;
+            }
+
         });
-        let swipesPerWeek = swipes / weeks
+        let swipesPerWeek = (swipes / weeks).toFixed(1)
+        let breakfastPerWeek = (breakfast / weeks).toFixed(1)
+        let lunchPerWeek = (lunch / weeks).toFixed(1)
+        let dinnerPerWeek = (dinner / weeks).toFixed(1)
+        let snackPerWeek = (lateNight / weeks).toFixed(1)
         console.log("Swipes per week");
         console.log(swipesPerWeek);
-        updateStats("Swipes per week: " + swipesPerWeek.toString());
+        updateStats("Swipes per week: " + swipesPerWeek.toString() + "\n" +
+            "Breakfasts per week: " + breakfastPerWeek + "\n" 
+            + "Lunches per week: " + lunchPerWeek + "\n" + "Dinners per week: " + 
+            dinnerPerWeek + "\n" + "Late night snacks per week: " + snackPerWeek);
     }
 
     function updateStats(stats) {
         const statsOutput = document.getElementById('statsOutput');
-        statsOutput.value = stats;
+        statsOutput.textContent = stats;
     }
 
     // Function to show the help box

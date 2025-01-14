@@ -159,7 +159,6 @@ button:focus {
 }
 
 
-/* Styling the pie chart container */
 .chart-container {
     flex: 0 0 45%;
     flex-grow: 0.8;
@@ -176,6 +175,7 @@ button:focus {
     border-radius: 10px;
     padding: 20px;
 }
+
 
 /* Update canvas to make the pie chart more responsive */
 canvas#myPieChart {
@@ -209,18 +209,34 @@ h2 {
     height: 40%;
 }
 
-
-#statsOutput {
+.stats-wrapper {
     width: 100%;
-    height: 150px;
-    resize: none;
+    height: 100%;
+    text-align: center;
+}
+
+.stats-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    color: #333;
+}
+
+.stats-output {
+    font-size: 16px;
+    color: #555;
     padding: 10px;
-    font-family: 'Arial', sans-serif;
-    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #fff;
+    min-height: 100px;
+    box-sizing: border-box;
+    text-align: left;
+    white-space: pre-wrap;
+    line-height: 1.3;
 }
+
 
 #data-box {
     display: none;
