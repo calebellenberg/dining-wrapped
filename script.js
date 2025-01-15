@@ -6,6 +6,12 @@ window.onload = function () {
     let parsedData = [];
     let displayBox = document.getElementById("data-box");
     let shareData = document.getElementById("share-data");
+    let labels = [
+        ["Ratty;break", "Ratty;lunch", "Ratty;dinner", "Ratty;late"],
+        ["Andrews;break", "Andrews;lunch", "Andrews;dinner", "Andrews;late"],
+        ["V-Dub;break", "V-Dub;lunch", "V-Dub;dinner", "V-Dub;late"],
+        ["Jo's;break", "Jo's;lunch", "Jo's;dinner", "Jo's;late"],
+        ["Ivy;break", "Ivy;lunch", "Ivy;dinner", "Ivy;late"]];
 
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,7 +33,38 @@ window.onload = function () {
     const storage = getStorage(app);
 
     let summaryData = {
-        locationFrequency: {},
+        crosstabs: {
+            ratty: {
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                lateNight: 0,
+            },
+            andrews: {
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                lateNight: 0,
+            },
+            vdub: {
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                lateNight: 0,
+            },
+            jos: {
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                lateNight: 0,
+            },
+            ivy: {
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                lateNight: 0,
+            },
+        }
     };
 
     document.getElementById('processButton').addEventListener('click', function () {
@@ -41,11 +78,13 @@ window.onload = function () {
                 complete: function (results) {
                     parsedData = results.data;
                     console.log('Parsed Data:', results.data);
+
                     calcFrequency();
                     calcTimes();
                     calcDays();
                     calcStats();
                     displayBox.style.display = "flex";
+                    console.log(summaryData);
                 },
                 error: function (error) {
                     console.error('Error parsing CSV:', error);
@@ -98,14 +137,84 @@ window.onload = function () {
         parsedData.forEach(item => {
             if (item.Description.includes("Sharpe")) {
                 rattyCount += 1;
+                // calculating meals by time
+                const timestamp = item.Date;
+                const hour = new Date(timestamp).getHours();
+                if (hour >= 20) {
+                    summaryData.crosstabs.ratty.lateNight += 1;
+                } else if (hour >= 16) {
+                    summaryData.crosstabs.ratty.dinner += 1;
+                } else if (hour >= 11) {
+                    summaryData.crosstabs.ratty.lunch += 1;
+                } else if (hour >= 5) {
+                    summaryData.crosstabs.ratty.breakfast += 1;
+                } else {
+                    summaryData.crosstabs.ratty.lateNight += 1;
+                }
             } else if (item.Description.includes("Andrews")) {
                 andrewsCount += 1;
+                // calculating meals by time
+                const timestamp = item.Date;
+                const hour = new Date(timestamp).getHours();
+                if (hour >= 20) {
+                    summaryData.crosstabs.andrews.lateNight += 1;
+                } else if (hour >= 16) {
+                    summaryData.crosstabs.andrews.dinner += 1;
+                } else if (hour >= 11) {
+                    summaryData.crosstabs.andrews.lunch += 1;
+                } else if (hour >= 5) {
+                    summaryData.crosstabs.andrews.breakfast += 1;
+                } else {
+                    summaryData.crosstabs.andrews.lateNight += 1;
+                }
             } else if (item.Description.includes("VW")) {
                 vwCount += 1;
+                // calculating meals by time
+                const timestamp = item.Date;
+                const hour = new Date(timestamp).getHours();
+                if (hour >= 20) {
+                    summaryData.crosstabs.vdub.lateNight += 1;
+                } else if (hour >= 16) {
+                    summaryData.crosstabs.vdub.dinner += 1;
+                } else if (hour >= 11) {
+                    summaryData.crosstabs.vdub.lunch += 1;
+                } else if (hour >= 5) {
+                    summaryData.crosstabs.vdub.breakfast += 1;
+                } else {
+                    summaryData.crosstabs.vdub.lateNight += 1;
+                }
             } else if (item.Description.includes("Josiah")) {
                 josCount += 1;
+                // calculating meals by time
+                const timestamp = item.Date;
+                const hour = new Date(timestamp).getHours();
+                if (hour >= 20) {
+                    summaryData.crosstabs.jos.lateNight += 1;
+                } else if (hour >= 16) {
+                    summaryData.crosstabs.jos.dinner += 1;
+                } else if (hour >= 11) {
+                    summaryData.crosstabs.jos.lunch += 1;
+                } else if (hour >= 5) {
+                    summaryData.crosstabs.jos.breakfast += 1;
+                } else {
+                    summaryData.crosstabs.jos.lateNight += 1;
+                }
             } else if (item.Description.includes("Ivy")) {
                 ivyCount += 1;
+                // calculating meals by time
+                const timestamp = item.Date;
+                const hour = new Date(timestamp).getHours();
+                if (hour >= 20) {
+                    summaryData.crosstabs.ivy.lateNight += 1;
+                } else if (hour >= 16) {
+                    summaryData.crosstabs.ivy.dinner += 1;
+                } else if (hour >= 11) {
+                    summaryData.crosstabs.ivy.lunch += 1;
+                } else if (hour >= 5) {
+                    summaryData.crosstabs.ivy.breakfast += 1;
+                } else {
+                    summaryData.crosstabs.ivy.lateNight += 1;
+                }
             }
         });
         summaryData.locationFrequency =
@@ -268,21 +377,23 @@ window.onload = function () {
         parsedData.forEach(item => {
             if (item.Description.includes("Automated reset")) {
                 weeks += 1;
-            } else if (!item.Description.includes("Deposit")) {
+            } else if (!item.Description.includes("Deposit") && !item.Description.includes("Concessions")) {
                 swipes += 1;
-            }
-            const timestamp = item.Date;
-            const hour = new Date(timestamp).getHours();
-            if (hour >= 20) {
-                lateNight += 1;
-            } else if (hour >= 16) {
-                dinner += 1;
-            } else if (hour >= 11) {
-                lunch += 1;
-            } else if (hour >= 5) {
-                breakfast += 1;
-            } else {
-                lateNight += 1;
+
+                // calculating meals by time
+                const timestamp = item.Date;
+                const hour = new Date(timestamp).getHours();
+                if (hour >= 20) {
+                    lateNight += 1;
+                } else if (hour >= 16) {
+                    dinner += 1;
+                } else if (hour >= 11) {
+                    lunch += 1;
+                } else if (hour >= 5) {
+                    breakfast += 1;
+                } else {
+                    lateNight += 1;
+                }
             }
 
         });
@@ -291,11 +402,17 @@ window.onload = function () {
         let lunchPerWeek = (lunch / weeks).toFixed(1)
         let dinnerPerWeek = (dinner / weeks).toFixed(1)
         let snackPerWeek = (lateNight / weeks).toFixed(1)
-        console.log("Swipes per week");
-        console.log(swipesPerWeek);
+        summaryData.mealFrequency =
+        {
+            "Breakfast": breakfast,
+            "Lunch": lunch,
+            "Dinner": dinner,
+            "Late Night": lateNight,
+        };
+        summaryData.weeks = weeks;
         updateStats("Swipes per week: " + swipesPerWeek.toString() + "\n" +
-            "Breakfasts per week: " + breakfastPerWeek + "\n" 
-            + "Lunches per week: " + lunchPerWeek + "\n" + "Dinners per week: " + 
+            "Breakfasts per week: " + breakfastPerWeek + "\n"
+            + "Lunches per week: " + lunchPerWeek + "\n" + "Dinners per week: " +
             dinnerPerWeek + "\n" + "Late night snacks per week: " + snackPerWeek);
     }
 
