@@ -6,6 +6,8 @@ window.onload = function () {
     let parsedData = [];
     let displayBox = document.getElementById("data-box");
     let shareData = document.getElementById("share-data");
+    let highlightWindow = document.getElementById("fullscreenContainer");
+
     let labels = [
         ["Ratty;break", "Ratty;lunch", "Ratty;dinner", "Ratty;late"],
         ["Andrews;break", "Andrews;lunch", "Andrews;dinner", "Andrews;late"],
@@ -79,10 +81,15 @@ window.onload = function () {
                     parsedData = results.data;
                     console.log('Parsed Data:', results.data);
 
+                    calcStats();
                     calcFrequency();
                     calcTimes();
                     calcDays();
-                    calcStats();
+                    favMealAtHall()
+                    favHallForMeal();
+                    favHallMeal();
+                    updateHighlightWindow();
+                    highlightWindow.style.display = "flex";
                     displayBox.style.display = "flex";
                     console.log(summaryData);
                 },
@@ -225,6 +232,31 @@ window.onload = function () {
             "Jo's": josCount,
             "Ivy": ivyCount,
         }
+        // Determine the top dining hall
+        const topDiningHall = Object.keys(summaryData.locationFrequency).reduce((top, current) => {
+            return summaryData.locationFrequency[current] > summaryData.locationFrequency[top]
+                ? current
+                : top;
+        }, Object.keys(summaryData.locationFrequency)[0]);
+
+        // Store it in summaryData
+        summaryData.topDiningHall = topDiningHall;
+
+        // Ensure mealFrequency is defined
+        if (summaryData.mealFrequency && Object.keys(summaryData.mealFrequency).length > 0) {
+            // Determine the top meal
+            const topMeal = Object.keys(summaryData.mealFrequency).reduce((top, current) => {
+                return summaryData.mealFrequency[current] > summaryData.mealFrequency[top]
+                    ? current
+                    : top;
+            }, Object.keys(summaryData.mealFrequency)[0]);
+
+            // Store it in summaryData
+            summaryData.favMeal = topMeal;
+        } else {
+            console.error("mealFrequency is undefined or empty");
+        }
+
         generatePieChart(summaryData.locationFrequency);
     }
     // Function to generate the pie chart
@@ -434,6 +466,245 @@ window.onload = function () {
         helpBox.style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
+
+    function favMealAtHall() {
+        const hallMaxMeals = {};
+
+        for (const hall in summaryData.crosstabs) {
+            const mealCounts = summaryData.crosstabs[hall];
+            const maxMeal = Object.entries(mealCounts).reduce((max, [meal, count]) => {
+                return count > max.count ? { meal, count } : max;
+            }, { meal: '', count: -Infinity });
+
+            hallMaxMeals[hall] = maxMeal;
+        }
+
+        summaryData.favMealAtHall = hallMaxMeals;
+    }
+
+    function favHallForMeal() {
+        const mealToDiningHall = {
+            breakfast: { hall: '', count: -Infinity },
+            lunch: { hall: '', count: -Infinity },
+            dinner: { hall: '', count: -Infinity },
+            lateNight: { hall: '', count: -Infinity }
+        };
+
+        for (const meal of ['breakfast', 'lunch', 'dinner', 'lateNight']) {
+            for (const hall in summaryData.crosstabs) {
+                const count = summaryData.crosstabs[hall][meal];
+                if (count > mealToDiningHall[meal].count) {
+                    mealToDiningHall[meal] = { hall, count };
+                }
+            }
+        }
+
+        summaryData.favHallForMeal = mealToDiningHall;
+    }
+
+    // calculates the single most common meal and dining hall combination
+    function favHallMeal() {
+        let maxCount = 0;
+        let favMeal = "";
+        let favHall = "";
+
+        // Ensure summaryData.crosstabs is defined
+        if (!summaryData.crosstabs) {
+            console.error("summaryData.crosstabs is undefined");
+            return;
+        }
+
+        // Iterate over the nested structure
+        for (const hall in summaryData.crosstabs) {
+            for (const meal in summaryData.crosstabs[hall]) {
+                const count = summaryData.crosstabs[hall][meal];
+
+                if (count > maxCount) {
+                    maxCount = count;
+                    favMeal = meal;
+                    favHall = hall;
+                }
+            }
+        }
+
+        summaryData.favHallMeal = {
+            hall: favHall,
+            meal: favMeal
+        };
+    }
+
+    // highlight reel logic
+
+    // Select all screens and buttons
+    const screens = document.querySelectorAll('.screen');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const screenCloseButton = document.getElementById('screenCloseButton');
+    const fullscreenContainer = document.getElementById('fullscreenContainer');
+
+    let currentScreenIndex = 0; // Start with the first screen
+
+    // Show the first screen initially
+    screens[currentScreenIndex].classList.add('active');
+
+    // Function to update screen visibility
+    function updateScreen() {
+        // Hide all screens
+        screens.forEach(screen => screen.classList.remove('active'));
+        // Show the current screen
+        screens[currentScreenIndex].classList.add('active');
+
+        // Disable buttons at the edges
+        prevButton.disabled = currentScreenIndex === 0;
+        nextButton.disabled = currentScreenIndex === screens.length - 1;
+    }
+
+    // Event listeners for navigation buttons
+    prevButton.addEventListener('click', () => {
+        if (currentScreenIndex > 0) {
+            currentScreenIndex--;
+            updateScreen();
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (currentScreenIndex < screens.length - 1) {
+            currentScreenIndex++;
+            updateScreen();
+        }
+    });
+
+    // Hide the fullscreen container when the close button is clicked
+    screenCloseButton.addEventListener('click', () => {
+        fullscreenContainer.style.display = 'none';
+    });
+
+    // Function to parse CSV data
+    function parseCSV(csvData) {
+        const parsedData = Papa.parse(csvData, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true
+        });
+        return parsedData.data;
+    }
+
+    function displayDiningArchetype(archetypeInfo) {
+        // Ensure summaryData.favHallMeal is defined
+        if (!summaryData.favHallMeal || !summaryData.favHallMeal.hall || !summaryData.favHallMeal.meal) {
+            console.error('summaryData.favHallMeal is undefined or missing properties');
+            return;
+        }
+
+        const favHall = summaryData.favHallMeal.hall.toLowerCase();
+        const favMeal = summaryData.favHallMeal.meal.toLowerCase();
+
+        const archetype = archetypeInfo.find(row => row[''] === favHall);
+        if (archetype) {
+            return archetype[favMeal];
+        } else {
+            console.error('Archetype not found for', favHall, favMeal);
+        }
+    }
+
+    function updateHighlightWindow() {
+
+        // top dining
+        const diningTextContainer = document.getElementById('topDining');
+        const diningImageContainer = document.getElementById('topDiningContainer');
+        // Create a new img element
+        const img1 = document.createElement('img');
+        if (summaryData.topDiningHall == "Ratty") {
+            // Set the image source
+            img1.src = 'images/ratty.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img1.alt = 'Ratty';
+            diningTextContainer.textContent = "The Ratty";
+        } else if (summaryData.topDiningHall == "Andrews") {
+            // Set the image source
+            img1.src = 'images/andrews.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img1.alt = 'Andrews';
+            diningTextContainer.textContent = "Andrews";
+        } else if (summaryData.topDiningHall == "V-Dub") {
+            // Set the image source
+            img1.src = 'images/vdub.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img1.alt = 'V-Dub';
+            diningTextContainer.textContent = "V-Dub";
+        } else if (summaryData.topDiningHall == "Jo's") {
+            // Set the image source
+            img1.src = 'images/jos.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img1.alt = "Jo's";
+            diningTextContainer.textContent = "Jo's";
+        } else if (summaryData.topDiningHall == "Ivy") {
+            // Set the image source
+            img1.src = 'images/ivy.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img1.alt = 'Ivy Room';
+            diningTextContainer.textContent = "Ivy Room";
+        }
+        img1.classList.add('custom-image');
+        // Append the image to the container
+        diningImageContainer.appendChild(img1);
+
+        // your favorite meal
+        const img2 = document.createElement('img');
+        const favMealTextContainer = document.getElementById('topMeal');
+        const favMealImageContainer = document.getElementById('topMealContainer');
+        if (summaryData.favMeal == "Breakfast") {
+            // Set the image source
+            img2.src = 'images/breakfast.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img2.alt = 'Breakfast';
+            favMealTextContainer.textContent = "Breakfast";
+        } else if (summaryData.favMeal == "Lunch") {
+            // Set the image source
+            img2.src = 'images/lunch.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img2.alt = 'Lunch';
+            favMealTextContainer.textContent = "Lunch";
+        } else if (summaryData.favMeal == "Dinner") {
+            // Set the image source
+            img2.src = 'images/dinner.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img2.alt = 'Dinner';
+            favMealTextContainer.textContent = "Dinner";
+        } else {
+            // Set the image source
+            img2.src = 'images/latenight.jpg';  // Replace with your image URL
+            // Optionally set the image alt text
+            img2.alt = 'Late Night';
+            favMealTextContainer.textContent = "Late Night";
+        }
+        img2.classList.add('custom-image');
+        // Append the image to the container
+        favMealImageContainer.appendChild(img2);
+
+        // your dining archetype
+        const diningArchetypeTitle = document.getElementById('diningArchetypeTitle');
+        const diningArchetypeDescription = document.getElementById('diningArchetypeDescription');
+        fetch('archetypeTitles.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const archetypeTitles = parseCSV(csvData);
+                console.log(archetypeTitles);
+                diningArchetypeTitle.textContent = displayDiningArchetype(archetypeTitles);
+            })
+            .catch(error => console.error('Error fetching CSV:', error));
+
+        fetch('archetypeDescriptions.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const archetypeDescriptions = parseCSV(csvData);
+                console.log(archetypeDescriptions);
+                diningArchetypeDescription.textContent = displayDiningArchetype(archetypeDescriptions);
+            })
+            .catch(error => console.error('Error fetching CSV:', error));
+    }
+
+
 
     document.getElementById('helpButton').addEventListener('click', showHelpBox);
     document.getElementById('closeButton').addEventListener('click', dismissHelpBox);
