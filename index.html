@@ -112,6 +112,39 @@
 
                 <!-- Screen 3 -->
                 <div class="screen" id="screen3">
+                    <h2 class="highlight-header" id="rec-input-title">Get your recommended meal
+                        plan: </h2>
+                    <div class="dropdown-container">
+                        <select id="classYear" class="dropdown">
+                            <option value disabled selected>Select class
+                                year</option>
+                            <option value="first">First-Year</option>
+                            <option value="sophomore">Sophomore</option>
+                            <option value="junior">Junior</option>
+                            <option value="senior">Senior</option>
+                        </select>
+                    </div>
+                    <div class="dropdown-container">
+                        <select id="campus" class="dropdown">
+                            <option value disabled selected>Select campus
+                                region</option>
+                            <option value="north">North Campus</option>
+                            <option value="south">South Campus</option>
+                        </select>
+                    </div>
+                    <button type="button"
+                        id="recommendButton">Recommend</button>
+                    <div id="recommendation-zone">
+                        <h2 class="highlight-header" id="recTitle">Your recommended meal plan
+                            is: </h2>
+                        <div id="mealPlan"></div>
+                        <div id="recMealImg"></div>
+                        <a href="https://dining.brown.edu/meal-plans/student-meal-plan-pricing" target="_blank" rel="noopener noreferrer">Learn more</a>
+                    </div>
+                </div>
+
+                <!-- Screen 4 -->
+                <div class="screen" id="screen4">
                     <h2 class="highlight-header">Your dining archetype
                         is...</h2>
                     <div id="diningArchetypeTitle"></div>

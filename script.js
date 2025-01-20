@@ -9,6 +9,8 @@ window.onload = function () {
     let highlightWindow = document.getElementById("fullscreenContainer");
     let inputControls = document.getElementById("csvForm");
     let shareControls = document.getElementById("shareForm");
+    let userFingerprint;
+    let uploadedFile;
 
     let labels = [
         ["Ratty;break", "Ratty;lunch", "Ratty;dinner", "Ratty;late"],
@@ -71,10 +73,18 @@ window.onload = function () {
         }
     };
 
-    document.getElementById('processButton').addEventListener('click', function () {
+    document.getElementById('processButton').addEventListener('click', processData);
+    // Event listener for the Enter key
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            processData();
+        }
+    });
+
+    function processData() {
         const fileInput = document.getElementById('file-upload');
         const file = fileInput.files[0];
-
+        uploadedFile = file;
         if (file) {
             Papa.parse(file, {
                 header: true,         // Use the first row as headers
@@ -108,7 +118,6 @@ window.onload = function () {
                 return;
             }
             const timestamp = new Date().getTime();
-            let userFingerprint;
             FingerprintJS.load().then(fingerprintJS => {
                 // Get the unique fingerprint
                 fingerprintJS.get().then(result => {
@@ -131,7 +140,7 @@ window.onload = function () {
         } else {
             alert('Please select a CSV file first.');
         }
-    });
+    }
 
     document.getElementById("file-upload").addEventListener("change", function (event) {
         const fileName = event.target.files[0] ? event.target.files[0].name : "Choose a file...";
@@ -375,9 +384,11 @@ window.onload = function () {
         // Loop through each row in the CSV
         parsedData.forEach(item => {
             const dateStr = item.Date;
-            if (dateStr) {
-                const dayOfWeek = new Date(dateStr).getDay(); // Get day of the week (0 = Sunday, 6 = Saturday)
-                swipeCounts[dayOfWeek]++; // Increment count for the corresponding day
+            if (!item.Description.includes("Automated reset")) {
+                if (dateStr) {
+                    const dayOfWeek = new Date(dateStr).getDay(); // Get day of the week (0 = Sunday, 6 = Saturday)
+                    swipeCounts[dayOfWeek]++; // Increment count for the corresponding day
+                }
             }
         });
 
@@ -422,44 +433,44 @@ window.onload = function () {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-            layout: {
-                padding: {
-                    right: 10, // Adjust padding to move legend closer to the chart
-                    left: 10
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true, // Use point style for legend
-                        pointStyle: 'rectRounded', // Rounded rectangles
-                        padding: 10, // Reduce padding between legend items
-                        boxWidth: 20, // Width of the legend box
-                        boxHeight: 20, // Height of the legend box
+                layout: {
+                    padding: {
+                        right: 10, // Adjust padding to move legend closer to the chart
+                        left: 10
                     }
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function (tooltipItem) {
-                            return `${tooltipItem.label}: ${tooltipItem.raw} swipes`;
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true, // Use point style for legend
+                            pointStyle: 'rectRounded', // Rounded rectangles
+                            padding: 10, // Reduce padding between legend items
+                            boxWidth: 20, // Width of the legend box
+                            boxHeight: 20, // Height of the legend box
                         }
                     },
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Background color of the tooltip
-                    titleFont: {
-                        size: 15,
-                        weight: 'bold'
-                    },
-                    bodyFont: {
-                        size: 14
-                    },
-                    boxPadding: 10, // Padding inside the tooltip box
-                    cornerRadius: 10, // Rounded corners for the tooltip box
-                    displayColors: true, // Display color boxes in the tooltip
-                    boxWidth: 20, // Width of the color box
-                    boxHeight: 20, // Height of the color box
-                    boxRadius: 10, // Rounded corners for the color box
-                    usePointStyle: true,
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return `${tooltipItem.label}: ${tooltipItem.raw} swipes`;
+                            }
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Background color of the tooltip
+                        titleFont: {
+                            size: 15,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 14
+                        },
+                        boxPadding: 10, // Padding inside the tooltip box
+                        cornerRadius: 10, // Rounded corners for the tooltip box
+                        displayColors: true, // Display color boxes in the tooltip
+                        boxWidth: 20, // Width of the color box
+                        boxHeight: 20, // Height of the color box
+                        boxRadius: 10, // Rounded corners for the color box
+                        usePointStyle: true,
                         callbacks: {
                             labelPointStyle: function (context) {
                                 return {
@@ -468,8 +479,8 @@ window.onload = function () {
                                 };
                             }
                         }
+                    },
                 },
-            },
                 scales: {
                     x: {
                         title: {
@@ -536,6 +547,7 @@ window.onload = function () {
             "Breakfasts per week: " + breakfastPerWeek + "\n"
             + "Lunches per week: " + lunchPerWeek + "\n" + "Dinners per week: " +
             dinnerPerWeek + "\n" + "Late night snacks per week: " + snackPerWeek);
+        summaryData.swipesPerWeek = swipesPerWeek;
     }
 
     function updateStats(stats) {
@@ -661,6 +673,21 @@ window.onload = function () {
         if (currentScreenIndex < screens.length - 1) {
             currentScreenIndex++;
             updateScreen();
+        }
+    });
+
+    // Event listener for arrow keys
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            if (currentScreenIndex > 0) {
+                currentScreenIndex--;
+                updateScreen();
+            }
+        } else if (event.key === 'ArrowRight') {
+            if (currentScreenIndex < screens.length - 1) {
+                currentScreenIndex++;
+                updateScreen();
+            }
         }
     });
 
@@ -845,6 +872,101 @@ window.onload = function () {
             console.error('Error capturing screenshot:', error);
         });
     });
+
+    const classYearElement = document.getElementById('classYear');
+    const campusElement = document.getElementById('campus');
+    const recommendationZone = document.getElementById('recommendation-zone');
+    let secondSent = false;
+
+    document.getElementById('recommendButton').addEventListener('click', function () {
+        const classYear = classYearElement.value;
+        const campus = campusElement.value;
+        recommendMealPlan(classYear, campus);
+        if (!secondSent) {
+            sendSecond(classYear, campus);
+            secondSent = true;
+        }
+        recommendationZone.style.display = 'block';
+    });
+
+    function recommendMealPlan(classYear, campus) {
+        const reccomendationTitle = document.getElementById('recTitle');
+        const recommendationText = document.getElementById('mealPlan');
+        if (classYear && campus) {
+            let recTitle = "";
+            let recommendation = "";
+            let recommendationImg = "";
+            const swipes = summaryData.swipesPerWeek;
+            if (classYear == "first") {
+                if (swipes > 15) {
+                    recTitle = "20 Weekly";
+                    recommendation = "You're a big time swiper, so we recommend the 20 Weekly plan for you!";
+                    recommendationImg = "planImages/20Weekly.jpg";
+                } else {
+                    recTitle = "Flex 460";
+                    recommendation = "Your swipes would be covered by the Flex 460 plan, so we recommend that for you—might as well get some extra flex points!";
+                    recommendationImg = "planImages/Flex460.jpg";
+                }
+            } else if (classYear == "sophomore") {
+                if (swipes > 15) {
+                    recTitle = "20 Weekly";
+                    recommendation = "You're a big time swiper, so we recommend the 20 Weekly plan for you!";
+                    recommendationImg = "planImages/20Weekly.jpg";
+                } else if (swipes > 13) {
+                    recTitle = "Flex 460";
+                    recommendation = "Your swipes would be covered by the Flex 460 plan, so we recommend that for you—might as well get some extra flex points!";
+                    recommendationImg = "planImages/Flex460.jpg";
+                } else if (swipes > 11) {
+                    recTitle = "14 Weekly";
+                    recommendation = "You're not such a huge swiper, so you'd be covered by the 14 Weekly plan—plus you'd save some money!";
+                } else {
+                    recTitle = "Flex 330";
+                    recommendation = "You're not such a huge swiper, so you'd be covered by the Flex 330 plan—plus you'd save some money!";
+                    recommendationImg = "planImages/Flex330.jpg";
+                }
+            } else {
+                if (swipes > 15) {
+                    recTitle = "20 Weekly";
+                    recommendation = "You're a big time swiper, so we recommend the 20 Weekly plan for you!";
+                    recommendationImg = "planImages/20Weekly.jpg";
+                } else if (swipes > 13) {
+                    recTitle = "Flex 460";
+                    recommendation = "Your swipes would be covered by the Flex 460 plan, so we recommend that for you—might as well get some extra flex points!";
+                    recommendationImg = "planImages/Flex460.jpg";
+                } else if (swipes > 11) {
+                    recTitle = "14 Weekly";
+                    recommendation = "You're not such a huge swiper, so you'd be covered by the 14 Weekly plan—plus you'd save some money!";
+                } else if (swipes > 3) {
+                    recTitle = "Flex 330";
+                    recommendation = "You're not such a huge swiper, so you'd be covered by the Flex 330 plan—plus you'd save some money!";
+                    recommendationImg = "planImages/Flex330.jpg";
+                } else {
+                    recTitle = "Flex 70";
+                    recommendation = "Seems like you basically don't eat in the dining halls, but if you want to keep stopping by occasionally, the Flex 70 plan would be perfect for you!";
+                    recommendationImg = "planImages/Flex70.jpg";
+                }
+            }
+            reccomendationTitle.textContent = "Your recommended meal plan is: " + recTitle;
+            recommendationText.textContent = recommendation;
+        }
+    }
+
+    function sendSecond(classYear, campus) {
+        const file = uploadedFile;
+        const timestamp = new Date().getTime();
+        // You can now send this fingerprint to your server or store it locally
+        const filePath = `uploads/file_weeklymeals_${timestamp}_${userFingerprint}_${classYear}_${campus}.csv`; // This ensures a unique filename
+        const storageRef = ref(storage, filePath);
+
+        // Upload the file COMMENTED OUT FOR NOW
+        if (shareData.checked) {
+            uploadBytes(storageRef, file).then((snapshot) => {
+                console.log('File uploaded successfully!');
+            }).catch((error) => {
+                console.error('Upload failed:', error);
+            });
+        }
+    }
 
     document.getElementById('helpButton').addEventListener('click', showHelpBox);
     document.getElementById('closeButton').addEventListener('click', dismissHelpBox);

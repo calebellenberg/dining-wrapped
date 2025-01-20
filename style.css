@@ -370,7 +370,7 @@ h2 {
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #3f5fff;
     color: white;
 }
 
@@ -442,4 +442,49 @@ h2 {
 
 #shareResultsButton {
     background-color: #3f5fff;
+}
+
+.dropdown-container {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dropdown {
+    width: 100%;
+    max-width: 320px; /* Increase max-width to ensure enough space for the arrow */
+    padding: 10px 40px 10px 10px; /* Add right padding to make space for the arrow */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%22http://www.w3.org/2000/svg%22 width%3D%2210%22 height%3D%225%22 viewBox%3D%220 0 10 5%22%3E%3Cpath fill%3D%22%23333%22 d%3D%22M0 0l5 5 5-5z%22/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 5px;
+}
+
+.dropdown:focus {
+    border-color: #3f5fff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(63, 95, 255, 0.5);
+}
+
+#recommendation-zone {
+    display: none;
+    margin-top: 20px;
+}
+
+#recommendButton {
+    margin-top: 14px;
+    background-color: #3f5fff;
+}
+
+#rec-input-title {
+    margin-bottom: 0px;
 }
