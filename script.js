@@ -7,6 +7,8 @@ window.onload = function () {
     let displayBox = document.getElementById("data-box");
     let shareData = document.getElementById("share-data");
     let highlightWindow = document.getElementById("fullscreenContainer");
+    let inputControls = document.getElementById("csvForm");
+    let shareControls = document.getElementById("shareForm");
 
     let labels = [
         ["Ratty;break", "Ratty;lunch", "Ratty;dinner", "Ratty;late"],
@@ -91,6 +93,8 @@ window.onload = function () {
                     updateHighlightWindow();
                     highlightWindow.style.display = "flex";
                     displayBox.style.display = "flex";
+                    inputControls.style.display = "none";
+                    shareControls.style.display = "flex";
                     console.log(summaryData);
                 },
                 error: function (error) {
@@ -285,18 +289,55 @@ window.onload = function () {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        right: 50, // Adjust padding to move legend closer to the chart
+                        left: 50
+                    }
+                },
                 plugins: {
                     legend: {
                         position: 'right',
+                        labels: {
+                            usePointStyle: true, // Use point style for legend
+                            pointStyle: 'rectRounded', // Rounded rectangles
+                            padding: 20, // Padding between legend items
+                            boxWidth: 20, // Width of the legend box
+                            boxHeight: 20, // Height of the legend box
+                        }
                     },
                     tooltip: {
                         callbacks: {
                             label: function (tooltipItem) {
-                                return `${tooltipItem.label}: ${tooltipItem.raw} visits`;
+                                return `${tooltipItem.label}: ${tooltipItem.raw} swipes`;
+                            }
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Background color of the tooltip
+                        titleFont: {
+                            size: 15,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 14
+                        },
+                        boxPadding: 10, // Padding inside the tooltip box
+                        cornerRadius: 10, // Rounded corners for the tooltip box
+                        displayColors: true, // Display color boxes in the tooltip
+                        boxWidth: 20, // Width of the color box
+                        boxHeight: 20, // Height of the color box
+                        boxRadius: 10, // Rounded corners for the color box
+                        usePointStyle: true,
+                        callbacks: {
+                            labelPointStyle: function (context) {
+                                return {
+                                    pointStyle: 'rectRounded', // Use rounded rectangle for the color box
+                                    rotation: 0, // Ensure no rotation
+                                };
                             }
                         }
                     }
+
                 }
             }
         });
@@ -380,6 +421,55 @@ window.onload = function () {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    right: 10, // Adjust padding to move legend closer to the chart
+                    left: 10
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true, // Use point style for legend
+                        pointStyle: 'rectRounded', // Rounded rectangles
+                        padding: 10, // Reduce padding between legend items
+                        boxWidth: 20, // Width of the legend box
+                        boxHeight: 20, // Height of the legend box
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw} swipes`;
+                        }
+                    },
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Background color of the tooltip
+                    titleFont: {
+                        size: 15,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 14
+                    },
+                    boxPadding: 10, // Padding inside the tooltip box
+                    cornerRadius: 10, // Rounded corners for the tooltip box
+                    displayColors: true, // Display color boxes in the tooltip
+                    boxWidth: 20, // Width of the color box
+                    boxHeight: 20, // Height of the color box
+                    boxRadius: 10, // Rounded corners for the color box
+                    usePointStyle: true,
+                        callbacks: {
+                            labelPointStyle: function (context) {
+                                return {
+                                    pointStyle: 'rectRounded', // Use rounded rectangle for the color box
+                                    rotation: 0, // Ensure no rotation
+                                };
+                            }
+                        }
+                },
+            },
                 scales: {
                     x: {
                         title: {
@@ -704,7 +794,57 @@ window.onload = function () {
             .catch(error => console.error('Error fetching CSV:', error));
     }
 
+    document.getElementById('shareSiteButton').addEventListener('click', function () {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Brown Dining Wrapped',
+                text: 'Check out Dining Wrapped!',
+                url: 'https://diningwrapped.calebellenberg.com'
+            }).then(() => {
+                console.log('Thanks for sharing!');
+            }).catch((error) => {
+                console.error('Error sharing:', error);
+            });
+        } else {
+            // Fallback for browsers that do not support the Web Share API
+            alert('Web Share API is not supported in your browser. Please copy the URL manually: https://diningwrapped.calebellenberg.com');
+        }
+    });
 
+    document.getElementById('shareResultsButton').addEventListener('click', function () {
+        const statsOutput = document.getElementById('data-box');
+
+        html2canvas(statsOutput).then(canvas => {
+            canvas.toBlob(blob => {
+                const file = new File([blob], 'stats.png', { type: 'image/png' });
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Brown Dining Wrapped Results',
+                        text: 'Check out my dining stats!',
+                        files: [file]
+                    }).then(() => {
+                        console.log('Thanks for sharing!');
+                    }).catch((error) => {
+                        console.error('Error sharing:', error);
+                    });
+                } else {
+                    // Fallback for browsers that do not support the Web Share API
+                    const url = URL.createObjectURL(file);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'stats.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    alert('Web Share API is not supported in your browser. The image has been downloaded.');
+                }
+            });
+        }).catch(error => {
+            console.error('Error capturing screenshot:', error);
+        });
+    });
 
     document.getElementById('helpButton').addEventListener('click', showHelpBox);
     document.getElementById('closeButton').addEventListener('click', dismissHelpBox);

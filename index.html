@@ -24,6 +24,8 @@
             src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
         <script
             src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.0.0/dist/fp.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         <script type="module" src="script.js"></script>
     </head>
     <body>
@@ -46,6 +48,14 @@
                         <span class="checkmark"></span>
                         Share data for overall stats
                     </label>
+                </div>
+            </form>
+            <form id="shareForm">
+                <div class="form-group">
+                    <button type="button" id="shareResultsButton">Share
+                        Results</button>
+                    <button type="button" id="shareSiteButton">Share
+                        Site</button>
                 </div>
             </form>
 
@@ -78,39 +88,43 @@
                 <div class="chart-container" id="stats-container">
                     <div class="stats-wrapper">
                         <h2 class="stats-title">Stats</h2>
-                        <div id="statsOutput" class="stats-output">No stats available yet.</div>
-                      </div>
+                        <div id="statsOutput" class="stats-output">No stats
+                            available yet.</div>
+                    </div>
                 </div>
             </div>
             <div class="fullscreen-container" id="fullscreenContainer">
 
                 <!-- Screen 1 -->
                 <div class="screen" id="screen1">
-                  <h2 class="highlight-header">Your top dining hall was...</h2>
-                  <div id="topDining"></div>
-                  <div class="img-container" id="topDiningContainer"></div>
+                    <h2 class="highlight-header">Your top dining hall
+                        was...</h2>
+                    <div id="topDining"></div>
+                    <div class="img-container" id="topDiningContainer"></div>
                 </div>
-              
+
                 <!-- Screen 2 -->
                 <div class="screen" id="screen2">
-                  <h2 class="highlight-header">Your favorite meal was...</h2>
+                    <h2 class="highlight-header">Your favorite meal was...</h2>
                     <div id="topMeal"></div>
                     <div class="img-container" id="topMealContainer"></div>
                 </div>
-              
+
                 <!-- Screen 3 -->
                 <div class="screen" id="screen3">
-                  <h2 class="highlight-header">Your dining archetype is...</h2>
-                  <div id="diningArchetypeTitle"></div>
-                  <div id="diningArchetypeDescription"></div>
+                    <h2 class="highlight-header">Your dining archetype
+                        is...</h2>
+                    <div id="diningArchetypeTitle"></div>
+                    <div id="diningArchetypeDescription"></div>
                 </div>
-              
+
                 <!-- Navigation buttons -->
                 <button class="nav-button" id="prevButton">Previous</button>
                 <button class="nav-button" id="nextButton">Next</button>
                 <!-- Close Button -->
-                <button class="screen-close-button" id="screenCloseButton">✖</button>
-              </div>
+                <button class="screen-close-button"
+                    id="screenCloseButton">✖</button>
+            </div>
         </main>
     </body>
 </html>
