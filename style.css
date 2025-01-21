@@ -385,13 +385,16 @@ h2 {
 
 .img-container {
     width: 60%;
-    border: 2px solid black;
+    border: 3px solid black;
+    border-radius: 5px;
     overflow: hidden;
+    margin-top: 8px;
     /* Ensures the image does not overflow the div */
 }
 
 .highlight-header {
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #diningArchetypeTitle {
@@ -400,6 +403,7 @@ h2 {
 
 #diningArchetypeDescription {
     margin-top: 10px;
+    width: 70%;
 }
 
 .custom-image {
@@ -517,4 +521,41 @@ h2 {
     /* Ensures the image maintains its aspect ratio and fills the div */
     display: block;
     /* Removes extra spacing below the image */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .chart-container {
+        flex: 0 0 100%;
+        max-height: 25%;
+    }
+    #stats-container {
+        height: 20%;
+    }
+
+    #pie-chart-container {
+        padding: 15px;
+    }
+
+    h1 {
+        line-height: 1.15;
+        margin-bottom: 18px;
+    }
+
+    #recMealImg {
+        width: 90%;
+    }
+
+    .img-container {
+        width: 90%;
+    }
+
+    #diningArchetypeDescription {
+        width: 100%;
+    }
+
+    .help-box {
+        width: 82%;
+    }
+
 }

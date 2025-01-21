@@ -278,6 +278,8 @@ window.onload = function () {
         const labels = Object.keys(locationFrequency);
         const data = Object.values(locationFrequency);
 
+        const legendAlign = isMobile() ? 'top' : 'right';
+
         // Destroy previous chart instance if it exists (to prevent overlapping charts)
         if (window.chart) {
             window.chart.destroy();
@@ -307,7 +309,7 @@ window.onload = function () {
                 },
                 plugins: {
                     legend: {
-                        position: 'right',
+                        position: legendAlign,
                         labels: {
                             usePointStyle: true, // Use point style for legend
                             pointStyle: 'rectRounded', // Rounded rectangles
@@ -653,6 +655,9 @@ window.onload = function () {
     // Show the first screen initially
     screens[currentScreenIndex].classList.add('active');
 
+    // Disable the "Previous" button initially
+    prevButton.disabled = currentScreenIndex === 0;
+
     // Function to update screen visibility
     function updateScreen() {
         // Hide all screens
@@ -983,6 +988,11 @@ window.onload = function () {
                 console.error('Upload failed:', error);
             });
         }
+    }
+
+    // Function to check if the user is on a mobile device
+    function isMobile() {
+        return window.matchMedia("(max-width: 768px)").matches;
     }
 
     document.getElementById('helpButton').addEventListener('click', showHelpBox);
