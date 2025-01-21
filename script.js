@@ -642,7 +642,8 @@ window.onload = function () {
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
     const screenCloseButton = document.getElementById('screenCloseButton');
-    const fullscreenContainer = document.getElementById('fullscreenContainer');
+    const moreStatsButton = document.getElementById('moreStats');
+    const reopenHighlights = document.getElementById('reopenHighlights');
 
     let currentScreenIndex = 0; // Start with the first screen
 
@@ -693,7 +694,16 @@ window.onload = function () {
 
     // Hide the fullscreen container when the close button is clicked
     screenCloseButton.addEventListener('click', () => {
-        fullscreenContainer.style.display = 'none';
+        highlightWindow.style.display = 'none';
+    });
+
+    moreStatsButton.addEventListener('click', () => {
+        highlightWindow.style.display = 'none';
+    });
+
+    reopenHighlights.addEventListener('click', () => {
+
+        highlightWindow.style.display = 'flex';
     });
 
     // Function to parse CSV data
