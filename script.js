@@ -968,7 +968,9 @@ window.onload = function () {
             reccomendationTitle.textContent = "Your recommended meal plan is: " + recTitle;
             recommendationText.textContent = recommendation;
             recImg.alt = recTitle;
-            recImg.classList.add('plan-image');
+            if (!isMobile()) {
+                recImg.classList.add('plan-image');
+            }
             document.getElementById("recMealImg").appendChild(recImg);
         }
     }
