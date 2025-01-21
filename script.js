@@ -896,7 +896,7 @@ window.onload = function () {
             sendSecond(classYear, campus);
             secondSent = true;
         }
-        recommendationZone.style.display = 'block';
+        recommendationZone.style.display = 'flex';
     });
 
     function recommendMealPlan(classYear, campus) {
@@ -905,59 +905,64 @@ window.onload = function () {
         if (classYear && campus) {
             let recTitle = "";
             let recommendation = "";
-            let recommendationImg = "";
+            const recImg = document.createElement('img');
             const swipes = summaryData.swipesPerWeek;
             if (classYear == "first") {
                 if (swipes > 15) {
                     recTitle = "20 Weekly";
                     recommendation = "You're a big time swiper, so we recommend the 20 Weekly plan for you!";
-                    recommendationImg = "planImages/20Weekly.jpg";
+                    recImg.src = "planImages/20Weekly.jpg";
                 } else {
                     recTitle = "Flex 460";
                     recommendation = "Your swipes would be covered by the Flex 460 plan, so we recommend that for you—might as well get some extra flex points!";
-                    recommendationImg = "planImages/Flex460.jpg";
+                    recImg.src = "planImages/Flex460.jpg";
                 }
             } else if (classYear == "sophomore") {
                 if (swipes > 15) {
                     recTitle = "20 Weekly";
                     recommendation = "You're a big time swiper, so we recommend the 20 Weekly plan for you!";
-                    recommendationImg = "planImages/20Weekly.jpg";
+                    recImg.src = "planImages/20Weekly.jpg";
                 } else if (swipes > 13) {
                     recTitle = "Flex 460";
                     recommendation = "Your swipes would be covered by the Flex 460 plan, so we recommend that for you—might as well get some extra flex points!";
-                    recommendationImg = "planImages/Flex460.jpg";
+                    recImg.src = "planImages/Flex460.jpg";
                 } else if (swipes > 11) {
                     recTitle = "14 Weekly";
                     recommendation = "You're not such a huge swiper, so you'd be covered by the 14 Weekly plan—plus you'd save some money!";
+                    recImg.src = "planImages/14Weekly.jpg";
                 } else {
                     recTitle = "Flex 330";
                     recommendation = "You're not such a huge swiper, so you'd be covered by the Flex 330 plan—plus you'd save some money!";
-                    recommendationImg = "planImages/Flex330.jpg";
+                    recImg.src = "planImages/Flex330.jpg";
                 }
             } else {
                 if (swipes > 15) {
                     recTitle = "20 Weekly";
                     recommendation = "You're a big time swiper, so we recommend the 20 Weekly plan for you!";
-                    recommendationImg = "planImages/20Weekly.jpg";
+                    recImg.src = "planImages/20Weekly.jpg";
                 } else if (swipes > 13) {
                     recTitle = "Flex 460";
                     recommendation = "Your swipes would be covered by the Flex 460 plan, so we recommend that for you—might as well get some extra flex points!";
-                    recommendationImg = "planImages/Flex460.jpg";
+                    recImg.src = "planImages/Flex460.jpg";
                 } else if (swipes > 11) {
                     recTitle = "14 Weekly";
                     recommendation = "You're not such a huge swiper, so you'd be covered by the 14 Weekly plan—plus you'd save some money!";
+                    recImg.src = "planImages/14Weekly.jpg";
                 } else if (swipes > 3) {
                     recTitle = "Flex 330";
                     recommendation = "You're not such a huge swiper, so you'd be covered by the Flex 330 plan—plus you'd save some money!";
-                    recommendationImg = "planImages/Flex330.jpg";
+                    recImg.src = "planImages/Flex330.jpg";
                 } else {
                     recTitle = "Flex 70";
                     recommendation = "Seems like you basically don't eat in the dining halls, but if you want to keep stopping by occasionally, the Flex 70 plan would be perfect for you!";
-                    recommendationImg = "planImages/Flex70.jpg";
+                    recImg.src = "planImages/Flex70.jpg";
                 }
             }
             reccomendationTitle.textContent = "Your recommended meal plan is: " + recTitle;
             recommendationText.textContent = recommendation;
+            recImg.alt = recTitle;
+            recImg.classList.add('plan-image');
+            document.getElementById("recMealImg").appendChild(recImg);
         }
     }
 
@@ -968,7 +973,6 @@ window.onload = function () {
         const filePath = `uploads/file_weeklymeals_${timestamp}_${userFingerprint}_${classYear}_${campus}.csv`; // This ensures a unique filename
         const storageRef = ref(storage, filePath);
 
-        // Upload the file COMMENTED OUT FOR NOW
         if (shareData.checked) {
             uploadBytes(storageRef, file).then((snapshot) => {
                 console.log('File uploaded successfully!');

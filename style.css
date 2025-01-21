@@ -478,6 +478,9 @@ h2 {
 #recommendation-zone {
     display: none;
     margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #recommendButton {
@@ -497,4 +500,21 @@ h2 {
 
 #moreStats {
     margin-top: 20px;
+}
+
+#recMealImg {
+    margin: 10px;
+    width: 75%;
+    overflow: hidden;
+}
+
+.plan-image {
+    width: 100%;
+    /* Makes the image take the full width of the container */
+    height: 100%;
+    /* Ensures the image fills the height of the container */
+    object-fit: cover;
+    /* Ensures the image maintains its aspect ratio and fills the div */
+    display: block;
+    /* Removes extra spacing below the image */
 }
