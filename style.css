@@ -545,6 +545,7 @@ h2 {
     #recMealImg {
         width: 90%;
         max-height: 100px;
+        object-fit: contain; /* Ensure the whole image is displayed */
     }
 
     .img-container {
