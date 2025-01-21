@@ -530,6 +530,9 @@ window.onload = function () {
             }
 
         });
+        if (weeks == 0) {
+            weeks = 16;
+        }
         let swipesPerWeek = (swipes / weeks).toFixed(1)
         let breakfastPerWeek = (breakfast / weeks).toFixed(1)
         let lunchPerWeek = (lunch / weeks).toFixed(1)

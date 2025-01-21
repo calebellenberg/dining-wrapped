@@ -255,8 +255,8 @@ h2 {
     width: 75%;
     margin: 20px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: none;
-    /* Initially hidden */
+    display: block;
+    /* Initially shown */
     position: fixed;
     top: 40%;
     left: 50%;
@@ -279,8 +279,8 @@ ol {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     /* Semi-transparent black */
-    display: none;
-    /* Initially hidden */
+    display: block;
+    /* Initially shown */
     z-index: 10;
 }
 
