@@ -127,7 +127,6 @@ window.onload = function () {
                     const filePath = `uploads/file_weeklymeals_${timestamp}_${userFingerprint}.csv`; // This ensures a unique filename
                     const storageRef = ref(storage, filePath);
 
-                    // Upload the file COMMENTED OUT FOR NOW
                     if (shareData.checked) {
                         uploadBytes(storageRef, file).then((snapshot) => {
                             console.log('File uploaded successfully!');
@@ -997,5 +996,6 @@ window.onload = function () {
 
     document.getElementById('helpButton').addEventListener('click', showHelpBox);
     document.getElementById('closeButton').addEventListener('click', dismissHelpBox);
+    document.getElementById('goToDataInput').addEventListener('click', dismissHelpBox);
 
 };

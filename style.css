@@ -544,6 +544,7 @@ h2 {
 
     #recMealImg {
         width: 90%;
+        max-height: 100px;
     }
 
     .img-container {
@@ -562,6 +563,10 @@ h2 {
 
     #white-space {
         height: 45px;
+    }
+
+    #goUpload {
+        margin-top: 18px;
     }
 
 }
