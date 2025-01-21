@@ -970,8 +970,8 @@ window.onload = function () {
             recImg.alt = recTitle;
             if (!isMobile()) {
                 recImg.classList.add('plan-image');
+                document.getElementById("recMealImg").appendChild(recImg);
             }
-            document.getElementById("recMealImg").appendChild(recImg);
         }
     }
 
