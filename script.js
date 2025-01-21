@@ -819,7 +819,7 @@ window.onload = function () {
         // your dining archetype
         const diningArchetypeTitle = document.getElementById('diningArchetypeTitle');
         const diningArchetypeDescription = document.getElementById('diningArchetypeDescription');
-        fetch('archetypeTitles.csv')
+        fetch('archetypeInfo/archetypeTitles.csv')
             .then(response => response.text())
             .then(csvData => {
                 const archetypeTitles = parseCSV(csvData);
@@ -828,7 +828,7 @@ window.onload = function () {
             })
             .catch(error => console.error('Error fetching CSV:', error));
 
-        fetch('archetypeDescriptions.csv')
+        fetch('archetypeInfo/archetypeDescriptions.csv')
             .then(response => response.text())
             .then(csvData => {
                 const archetypeDescriptions = parseCSV(csvData);
@@ -961,7 +961,7 @@ window.onload = function () {
                     recImg.src = "planImages/Flex330.jpg";
                 } else {
                     recTitle = "Flex 70";
-                    recommendation = "Seems like you basically don't eat in the dining halls, but if you want to keep stopping by occasionally, the Flex 70 plan would be perfect for you!";
+                    recommendation = "Seems like you basically don't eat in the dining halls, but if you want to keep stopping by occasionally, the Flex 70 plan could work well for you!";
                     recImg.src = "planImages/Flex70.jpg";
                 }
             }
