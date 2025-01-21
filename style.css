@@ -548,6 +548,8 @@ h2 {
 
     .img-container {
         width: 90%;
+        max-height: 60%;
+        aspect-ratio: 3/2;
     }
 
     #diningArchetypeDescription {
