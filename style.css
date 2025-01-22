@@ -523,6 +523,10 @@ h2 {
     /* Removes extra spacing below the image */
 }
 
+#goUpload {
+    margin-top: 18px;
+}
+
 /* Media query for mobile devices */
 @media (max-width: 768px) {
     .chart-container {
@@ -564,10 +568,6 @@ h2 {
 
     #white-space {
         height: 45px;
-    }
-
-    #goUpload {
-        margin-top: 18px;
     }
 
 }
