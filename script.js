@@ -730,8 +730,8 @@ window.onload = function () {
             return;
         }
 
-        const favHall = summaryData.favHallMeal.hall.toLowerCase();
-        const favMeal = summaryData.favHallMeal.meal.toLowerCase();
+        const favHall = summaryData.favHallMeal.hall;
+        const favMeal = summaryData.favHallMeal.meal;
 
         const archetype = archetypeInfo.find(row => row[''] === favHall);
         if (archetype) {
